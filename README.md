@@ -1,73 +1,60 @@
 # AI Engineer Portfolio
 
-A modern, responsive portfolio website showcasing enterprise-grade AI solutions, built with React, TailwindCSS, and Framer Motion.
+[![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-cyan?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer%20Motion-10-purple?style=for-the-badge&logo=framer)](https://www.framer.com/motion/)
+[![Vite](https://img.shields.io/badge/Vite-5-yellow?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+
+A modern, responsive portfolio website showcasing enterprise-grade AI solutions, built with cutting-edge technologies.
 
 ## 🚀 Featured Project: URBuddy LLM
 
-**AI-Powered Document Intelligence System** - Enterprise-scale AI system for processing and analyzing corporate documents from various SharePoint sources using RAG (Retrieval-Augmented Generation) approach.
+**AI-Powered Document Intelligence System** - An on-premise, enterprise-scale AI system for processing and analyzing corporate documents from various SharePoint sources using a Retrieval-Augmented Generation (RAG) approach.
 
 ### Key Highlights
 
-- 🧠 **Advanced AI Technologies**: LangChain, ColPali, Sentence Transformers, Vector Databases
+- 🧠 **Advanced AI**: LangChain, Sentence Transformers, Vector Databases (Milvus)
 - 🏢 **Enterprise Integration**: Multi-site SharePoint, Oracle/MSSQL, NTLM Authentication
 - ⚡ **High Performance**: Multi-GPU H100 support, Load Balancing, Real-time Processing
 - 🔒 **Security**: Fernet Encryption, JWT Tokens, Secure API endpoints
 - 🛠️ **Modern Stack**: FastAPI, Docker, Redis Caching, Comprehensive Monitoring
 
-## 🎨 Design Features
+## 🎨 Features & Tech Stack
 
-- **Dark Mode Theme**: Professional dark theme with neon blue and gradient accents
-- **Smooth Animations**: Framer Motion powered animations and transitions
-- **Responsive Design**: Optimized for desktop and mobile devices
-- **Interactive Elements**: Hover effects, progress bars, and dynamic content
-- **Modern UI**: Clean layout with glassmorphism effects and gradient backgrounds
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **React 18** - Modern JavaScript framework
-- **TailwindCSS** - Utility-first CSS framework
-- **Framer Motion** - Production-ready motion library
-- **Lucide React** - Beautiful icon library
-- **Vite** - Fast build tool and dev server
-
-### Features
-- Smooth scroll navigation
-- Section-based scrolling with active indicators
-- Mobile-responsive navigation
-- Interactive skill progress bars
-- Animated project showcases
-- Contact form with validation
-- Professional architecture diagrams
+- **Professional UI**: Dark mode theme with neon blue and gradient accents.
+- **Smooth Animations**: Built with Framer Motion for a fluid user experience.
+- **Fully Responsive**: Optimized for desktop, tablet, and mobile devices.
+- **Interactive Elements**: Hover effects, sliders, and dynamic content.
+- **Frontend**: React 18, TailwindCSS, Lucide React, and Vite.
+- **Backend (Projects)**: FastAPI, Node.js.
+- **Databases**: PostgreSQL, MySQL, Oracle, Milvus.
 
 ## 🚦 Getting Started
 
 ### Prerequisites
+
 - Node.js (v16 or higher)
 - npm or yarn
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd portfolio-site
-   ```
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/nazirxz/nazirman-portfolio.git
+    cd nazirman-portfolio
+    ```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-3. **Start development server**
-   ```bash
-   npm run dev
-   ```
+3.  **Start the development server**
+    ```bash
+    npm run dev
+    ```
 
-4. **Open in browser**
-   ```
-   http://localhost:5173
-   ```
+4.  **Open in browser** at `http://localhost:5173`
 
 ### Build for Production
 
@@ -76,49 +63,27 @@ npm run build
 npm run preview
 ```
 
-## 📱 Responsive Design
-
-The portfolio is fully responsive and optimized for:
-- **Desktop** (1024px+): Full-featured layout with side-by-side content
-- **Tablet** (768px - 1023px): Adapted grid layouts and navigation
-- **Mobile** (< 768px): Stacked layouts with collapsible navigation
-
 ## 🎯 Sections
 
-1. **Hero** - Introduction with animated elements and call-to-action
-2. **About** - Professional summary with statistics and philosophy
-3. **Projects** - Detailed URBuddy LLM project showcase
-4. **Architecture** - System architecture and data flow diagrams
-5. **Tech Stack** - Comprehensive skills with progress indicators
-6. **Contact** - Contact form and professional links
+1.  **Hero**: Introduction with animated elements.
+2.  **About**: Professional summary with key statistics.
+3.  **Projects**: Detailed showcase of the URBuddy LLM project.
+4.  **Tech Stack**: Comprehensive overview of skills and technologies.
+5.  **Contact**: Contact details and social media links.
 
 ## 🔧 Customization
 
-### Colors
-The portfolio uses a custom color palette defined in `tailwind.config.js`:
-- **Primary**: Neon Blue (`#00D4FF`)
-- **Secondary**: Purple Gradient (`#8B5CF6`)
-- **Accent**: Pink Gradient (`#EC4899`)
-
-### Animation
-All animations are built with Framer Motion and can be customized in individual components.
-
-### Content
-Update the content in the respective component files:
-- `src/components/Hero.jsx` - Personal introduction
-- `src/components/Projects.jsx` - Project details and metrics
-- `src/components/Contact.jsx` - Contact information
-
-## 📄 License
-
-This project is created for portfolio demonstration purposes.
+- **Colors**: The color palette is defined in `tailwind.config.js`.
+- **Animations**: Animations are built with Framer Motion and can be customized in their respective components.
+- **Content**: Update content directly in the component files located in `src/components/`.
 
 ## 🤝 Contact
 
-For questions about this portfolio or potential collaborations:
-- Email: ai.engineer@example.com
-- LinkedIn: [AI Engineer Profile]
-- GitHub: [Repository Link]
+For questions or collaborations, feel free to reach out:
+
+- **Email**: `nazirman.it@gmail.com`
+- **LinkedIn**: [https://www.linkedin.com/in/nazirman/](https://www.linkedin.com/in/nazirman/)
+- **GitHub**: [https://github.com/nazirxz](https://github.com/nazirxz)
 
 ---
 
