@@ -180,13 +180,13 @@ const Projects = () => {
             >
               <SwiperSlide>
                 <div className="card-glow">
-                  <img src="/src/assets/images/porto/snipe_urbuddy.png" alt="URBuddy Main Page" className="rounded-lg shadow-lg" />
+                  <img src="/images/snipe_urbuddy.png" alt="URBuddy Main Page" className="rounded-lg shadow-lg" />
                   <p className="text-center text-gray-400 mt-2 text-sm">URBuddy Main Interface</p>
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="card-glow">
-                  <img src="/src/assets/images/porto/milvus_db.png" alt="Milvus DB Collection" className="rounded-lg shadow-lg" />
+                  <img src="/images/milvus_db.png" alt="Milvus DB Collection" className="rounded-lg shadow-lg" />
                   <p className="text-center text-gray-400 mt-2 text-sm">Vector Collections in Milvus DB</p>
                 </div>
               </SwiperSlide>
