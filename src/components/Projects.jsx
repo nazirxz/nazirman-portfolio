@@ -50,8 +50,10 @@ const Projects = () => {
     ],
     database: [
       { name: "Oracle", color: "bg-red-600" },
-      { name: "cx_Oracle", color: "bg-red-400" },
-      { name: "MSSQL", color: "bg-blue-700" }
+      { name: "MSSQL", color: "bg-blue-700" },
+      { name: "Milvus", color: "bg-yellow-500" },
+      { name: "Chroma DB", color: "bg-green-500" },
+      { name: "Redis", color: "bg-red-500" }
     ],
     security: [
       { name: "NTLM", color: "bg-gray-600" },

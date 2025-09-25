@@ -113,13 +113,6 @@ const TechStack = () => {
     }
   ]
 
-  const certifications = [
-    { name: "Full-Stack Developer", issuer: "Meta", year: "2025", icon: "⚛️" },
-    { name: "Mobile App Developer", issuer: "Google", year: "2025", icon: "📱" },
-    { name: "AI/ML Engineer", issuer: "AWS", year: "2025", icon: "🧠" },
-    { name: "Cloud Architect", issuer: "Google Cloud", year: "2023", icon: "☁️" }
-  ]
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -142,8 +135,8 @@ const TechStack = () => {
   }
 
   return (
-    <section id="techstack" className="section-padding bg-gray-800/30">
-      <div className="max-w-7xl mx-auto">
+    <section id="techstack" className="section-padding bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -154,42 +147,41 @@ const TechStack = () => {
           <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
             Technology Stack
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Technologies and tools I work with across Full-Stack Development, AI/ML, Mobile Apps, and Cloud Infrastructure
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            A curated list of technologies and tools I work with to bring ideas to life.
           </p>
         </motion.div>
 
-
-        {/* Tech Stack Badges */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-
-          <div className="flex flex-wrap justify-center gap-3">
-            {[
-              "React.js", "React Native", "Node.js", "Python", "TypeScript", "Flutter",
-              "Next.js", "Express.js", "FastAPI", "PostgreSQL", "AWS",
-              "Docker", "Firebase", "TailwindCSS", "GraphQL", "JWT", "OAuth",
-              "Vue.js", "MySQL", "Redis", "Kubernetes", "Milvus"
-            ].map((tech, index) => (
-              <motion.span
-                key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="tech-badge cursor-pointer"
-              >
-                {tech}
-              </motion.span>
-            ))}
-          </div>
+          {skillCategories.map((category, index) => (
+            <motion.div
+              key={index}
+              variants={itemVariants}
+              className={`bg-gray-800/50 rounded-xl shadow-lg overflow-hidden border border-gray-700/50 backdrop-blur-sm transition-all duration-300 hover:shadow-neon-blue/20 hover:-translate-y-1 hover:border-neon-blue/50 ${category.bgGradient}`}
+            >
+              <div className="p-6">
+                <div className="flex items-center mb-4">
+                  <category.icon className={`w-8 h-8 mr-4 ${category.color}`} />
+                  <h3 className={`text-xl font-bold ${category.color}`}>{category.title}</h3>
+                </div>
+                <ul className="space-y-2">
+                  {category.skills.map((skill, sIndex) => (
+                    <li key={sIndex} className="flex items-center text-gray-300">
+                      <span className="text-neon-blue/80 mr-2">›</span>
+                      {skill.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
-
       </div>
     </section>
   )
