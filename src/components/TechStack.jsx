@@ -82,7 +82,7 @@ const TechStack = () => {
     },
     {
       title: "Cloud & DevOps",
-      icon: Cloud,ya
+      icon: Cloud,
       color: "text-green-400",
       bgGradient: "from-green-400/20 to-green-400/10",
       skills: [
