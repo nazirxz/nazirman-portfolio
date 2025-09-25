@@ -146,6 +146,7 @@ const Projects = () => {
             <p className="text-lg text-gray-300 leading-relaxed">
               <span className="text-neon-blue font-semibold">AI-Powered Document Intelligence System</span>
               {" "}for processing and analyzing corporate documents from various SharePoint sources.
+              The system is also integrated with Microsoft SQL Server and Oracle databases to build a comprehensive knowledge base.
               Using RAG (Retrieval-Augmented Generation) approach to provide contextual and intelligent
               responses based on enterprise document content and knowledge base.
               <br /><br />
