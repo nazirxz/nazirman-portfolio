@@ -223,7 +223,7 @@ const Contact = () => {
           className="text-center mt-16 pt-8 border-t border-gray-700/50"
         >
           <p className="text-gray-400">
-            © 2024 Software Engineer Portfolio. Built with React, TailwindCSS, and Framer Motion.
+            © 2025 Software Engineer Portfolio. Built with React, TailwindCSS, and Framer Motion.
           </p>
           <p className="text-gray-500 text-sm mt-2">
             Specializing in AI/ML Development, Full-Stack Web Apps, and Mobile Solutions

@@ -114,9 +114,9 @@ const TechStack = () => {
   ]
 
   const certifications = [
-    { name: "Full-Stack Developer", issuer: "Meta", year: "2024", icon: "⚛️" },
-    { name: "Mobile App Developer", issuer: "Google", year: "2024", icon: "📱" },
-    { name: "AI/ML Engineer", issuer: "AWS", year: "2024", icon: "🧠" },
+    { name: "Full-Stack Developer", issuer: "Meta", year: "2025", icon: "⚛️" },
+    { name: "Mobile App Developer", issuer: "Google", year: "2025", icon: "📱" },
+    { name: "AI/ML Engineer", issuer: "AWS", year: "2025", icon: "🧠" },
     { name: "Cloud Architect", issuer: "Google Cloud", year: "2023", icon: "☁️" }
   ]
 
