@@ -119,10 +119,10 @@ const Projects = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold gradient-text mb-6">
             Featured Project
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto px-4">
             Showcase of enterprise-scale AI system built with cutting-edge technology
           </p>
         </motion.div>
@@ -207,7 +207,7 @@ const Projects = () => {
             Technology Stack
           </h4>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Object.entries(techStacks).map(([category, technologies], categoryIndex) => (
               <motion.div
                 key={category}
@@ -247,7 +247,7 @@ const Projects = () => {
             Business Impact
           </h4>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {businessImpacts.map((impact, index) => (
               <motion.div
                 key={index}
@@ -286,7 +286,7 @@ const Projects = () => {
             <h5 className="text-xl font-semibold text-neon-blue mb-6 text-center">
               Core Architecture Components
             </h5>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -355,8 +355,8 @@ const Projects = () => {
             <h5 className="text-xl font-semibold text-purple-gradient mb-6 text-center">
               Document Processing & RAG Flow
             </h5>
-            <div className="card-glow bg-gradient-to-br from-gray-800/50 to-gray-700/50 p-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="card-glow bg-gradient-to-br from-gray-800/50 to-gray-700/50 p-4 md:p-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Document Ingestion Flow */}
                 <div className="space-y-4">
                   <h6 className="text-lg font-semibold text-neon-blue mb-4 text-center">
