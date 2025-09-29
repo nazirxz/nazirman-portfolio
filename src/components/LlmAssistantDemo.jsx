@@ -24,6 +24,7 @@ const LlmAssistantDemo = () => {
   ])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
+  const [ending, setEnding] = useState(false)
   const [sessionId, setSessionId] = useState(() => {
     try {
       const saved = localStorage.getItem(SESSION_KEY)
@@ -117,6 +118,7 @@ const LlmAssistantDemo = () => {
 
   const endChat = async () => {
     if (!sessionId) return
+    setEnding(true)
     try {
       const res = await fetch(`${API_BASE}/api/v1/chat/session/${sessionId}`, { method: 'DELETE' })
       const data = await res.json().catch(() => ({}))
@@ -134,6 +136,7 @@ const LlmAssistantDemo = () => {
       setSessionId(newId)
       try { localStorage.setItem(SESSION_KEY, newId) } catch {}
       setMessages([{ role: 'assistant', content: 'New chat started. Upload a document or ask a question.' }])
+      setEnding(false)
     }
   }
 
@@ -162,24 +165,33 @@ const LlmAssistantDemo = () => {
             {/* Upload bar */}
             <div className="p-4 border-b border-gray-700/60">
               <div className="flex items-center gap-3 flex-wrap">
-                <label className="inline-flex items-center px-3 py-2 rounded-lg bg-gray-700/60 hover:bg-gray-700 cursor-pointer text-sm">
+                <label
+                  aria-disabled={ending}
+                  className={`inline-flex items-center px-3 py-2 rounded-lg bg-gray-700/60 text-sm ${ending ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'hover:bg-gray-700 cursor-pointer'}`}
+                >
                   <input type="file" className="hidden" onChange={handleSelectFile} />
                   <span>Choose File</span>
                 </label>
                 <button
                   onClick={handleUpload}
-                  disabled={!file || uploading}
+                  disabled={!file || uploading || ending}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    uploading ? 'bg-gray-700 text-gray-300' : 'bg-neon-blue text-white hover:brightness-110'
+                    (uploading || ending) ? 'bg-gray-700 text-gray-300' : 'bg-neon-blue text-white hover:brightness-110'
                   }`}
                 >
-                  {uploading ? 'Uploading...' : 'Upload to Assistant'}
+                  {uploading ? 'Uploading...' : (ending ? 'Please wait...' : 'Upload to Assistant')}
                 </button>
                 <button
                   onClick={endChat}
-                  className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-700/70 hover:bg-gray-700 text-gray-100"
+                  disabled={ending || uploading || sending}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium text-gray-100 ${ending ? 'bg-gray-700 cursor-not-allowed' : 'bg-gray-700/70 hover:bg-gray-700'}`}
                 >
-                  End Chat
+                  {ending ? (
+                    <span className="inline-flex items-center">
+                      <span className="inline-block h-4 w-4 border-2 border-white/60 border-t-transparent rounded-full animate-spin mr-2"></span>
+                      Ending...
+                    </span>
+                  ) : 'End Chat'}
                 </button>
                 {file && (
                   <span className="text-xs text-gray-300 truncate">{file.name} ({Math.ceil(file.size/1024)} KB)</span>
@@ -221,9 +233,9 @@ const LlmAssistantDemo = () => {
                 />
                 <button
                   onClick={sendMessage}
-                  disabled={!input.trim() || sending || uploading}
+                  disabled={!input.trim() || sending || uploading || ending}
                   className={`px-4 py-2 rounded-lg text-sm font-semibold ${
-                    sending ? 'bg-gray-700 text-gray-300' : 'bg-purple-gradient text-white hover:brightness-110'
+                    (sending || ending) ? 'bg-gray-700 text-gray-300' : 'bg-purple-gradient text-white hover:brightness-110'
                   }`}
                 >
                   Send
