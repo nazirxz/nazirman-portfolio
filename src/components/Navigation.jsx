@@ -11,6 +11,7 @@ const Navigation = () => {
     { id: 'hero', label: 'Home', icon: Home },
     { id: 'about', label: 'About', icon: User },
     { id: 'projects', label: 'Projects', icon: Briefcase },
+    { id: 'llm-assistant', label: 'LLM Assistant', icon: Layers },
     { id: 'techstack', label: 'Skills', icon: Code },
     { id: 'contact', label: 'Contact', icon: Mail }
   ]
