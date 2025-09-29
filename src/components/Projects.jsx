@@ -493,20 +493,7 @@ const Projects = () => {
           </div>
         </motion.div>
 
-        {/* Try Demo CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mt-12 card-glow text-center"
-        >
-          <h4 className="text-2xl font-bold mb-2">Try Porto LLM Assistant</h4>
-          <p className="text-gray-300 mb-4">Upload a document and ask questions in an interactive demo.</p>
-          <a href="#llm-assistant" className="inline-block px-5 py-2 rounded-lg bg-neon-blue text-gray-900 font-semibold hover:brightness-110">
-            Open Demo
-          </a>
-        </motion.div>
+        
       </div>
     </section>
   )

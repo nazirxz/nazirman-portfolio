@@ -1,6 +1,17 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 const API_BASE = import.meta.env.VITE_CHATDOC_API_BASE || 'https://chatdoc-api.vercel.app'
+
+const SESSION_KEY = 'chatdoc_session_id'
+
+const uuidv4 = () => {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID()
+  // Fallback
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8)
+    return v.toString(16)
+  })
+}
 
 const LlmAssistantDemo = () => {
   const [file, setFile] = useState(null)
@@ -13,6 +24,15 @@ const LlmAssistantDemo = () => {
   ])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
+  const [sessionId, setSessionId] = useState(() => {
+    try {
+      const saved = localStorage.getItem(SESSION_KEY)
+      if (saved) return saved
+    } catch {}
+    const id = uuidv4()
+    try { localStorage.setItem(SESSION_KEY, id) } catch {}
+    return id
+  })
   const inputRef = useRef(null)
 
   const isPdf = useMemo(() => file && file.type?.includes('pdf'), [file])
@@ -49,12 +69,16 @@ const LlmAssistantDemo = () => {
     try {
       const form = new FormData()
       form.append('file', file)
+      if (sessionId) form.append('session_id', sessionId)
       const res = await fetch(`${API_BASE}/api/v1/chat/upload`, {
         method: 'POST',
         body: form
       })
       const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data?.message || 'Upload failed')
+      if (!res.ok) throw new Error(data?.message || `Upload failed (HTTP ${res.status})`)
+      if (data?.session_id && data.session_id !== sessionId) {
+        setSessionId(data.session_id)
+      }
       setUploadMsg(data?.message || `File '${file.name}' uploaded and processed successfully.`)
       setMessages((m) => [
         ...m,
@@ -77,10 +101,10 @@ const LlmAssistantDemo = () => {
       const res = await fetch(`${API_BASE}/api/v1/chat/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: q })
+        body: JSON.stringify({ query: q, session_id: sessionId })
       })
       const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data?.detail || data?.message || 'Failed to get a response')
+      if (!res.ok) throw new Error(data?.detail || data?.message || `Failed to get a response (HTTP ${res.status})`)
       const content = data?.response || JSON.stringify(data)
       setMessages((m) => [...m, { role: 'assistant', content }])
     } catch (err) {
@@ -91,6 +115,32 @@ const LlmAssistantDemo = () => {
     }
   }
 
+  const endChat = async () => {
+    if (!sessionId) return
+    try {
+      const res = await fetch(`${API_BASE}/api/v1/chat/session/${sessionId}`, { method: 'DELETE' })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(data?.message || `Failed to end session (HTTP ${res.status})`)
+      setUploadMsg(data?.message || 'Session ended and files cleared.')
+    } catch (err) {
+      setUploadMsg(`End Chat failed: ${err.message}`)
+    } finally {
+      // Reset local state regardless of API result to keep UX clean
+      if (fileUrl) URL.revokeObjectURL(fileUrl)
+      setFile(null)
+      setFileUrl(null)
+      setFileText('')
+      const newId = uuidv4()
+      setSessionId(newId)
+      try { localStorage.setItem(SESSION_KEY, newId) } catch {}
+      setMessages([{ role: 'assistant', content: 'New chat started. Upload a document or ask a question.' }])
+    }
+  }
+
+  useEffect(() => {
+    try { localStorage.setItem(SESSION_KEY, sessionId) } catch {}
+  }, [sessionId])
+
   const handleKeyDown = (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault()
@@ -99,10 +149,10 @@ const LlmAssistantDemo = () => {
   }
 
   return (
-    <section id="llm-assistant" className="section-padding bg-gray-800/30">
+    <section id="chat-doc" className="section-padding bg-gray-800/30">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-2">Porto LLM Assistant</h2>
+          <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-2">Chat Doc</h2>
           <p className="text-gray-300">Upload a document, preview it, and ask questions via chat.</p>
         </div>
 
@@ -111,7 +161,7 @@ const LlmAssistantDemo = () => {
           <div className="flex flex-col h-[70vh] card-glow">
             {/* Upload bar */}
             <div className="p-4 border-b border-gray-700/60">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
                 <label className="inline-flex items-center px-3 py-2 rounded-lg bg-gray-700/60 hover:bg-gray-700 cursor-pointer text-sm">
                   <input type="file" className="hidden" onChange={handleSelectFile} />
                   <span>Choose File</span>
@@ -125,8 +175,17 @@ const LlmAssistantDemo = () => {
                 >
                   {uploading ? 'Uploading...' : 'Upload to Assistant'}
                 </button>
+                <button
+                  onClick={endChat}
+                  className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-700/70 hover:bg-gray-700 text-gray-100"
+                >
+                  End Chat
+                </button>
                 {file && (
                   <span className="text-xs text-gray-300 truncate">{file.name} ({Math.ceil(file.size/1024)} KB)</span>
+                )}
+                {sessionId && (
+                  <span className="text-[10px] text-gray-400">Session: {sessionId}</span>
                 )}
               </div>
               {uploadMsg && (
@@ -162,7 +221,7 @@ const LlmAssistantDemo = () => {
                 />
                 <button
                   onClick={sendMessage}
-                  disabled={!input.trim() || sending}
+                  disabled={!input.trim() || sending || uploading}
                   className={`px-4 py-2 rounded-lg text-sm font-semibold ${
                     sending ? 'bg-gray-700 text-gray-300' : 'bg-purple-gradient text-white hover:brightness-110'
                   }`}
