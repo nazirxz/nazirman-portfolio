@@ -44,6 +44,7 @@ const LlmAssistantDemo = () => {
   ), [file])
 
   const handleSelectFile = (e) => {
+    if (ending) return
     const f = e.target.files?.[0]
     if (!f) return
     // Revoke old URL
@@ -61,6 +62,7 @@ const LlmAssistantDemo = () => {
   }
 
   const handleUpload = async () => {
+    if (ending) return
     if (!file) {
       setUploadMsg('Please choose a file first.')
       return
@@ -93,6 +95,7 @@ const LlmAssistantDemo = () => {
   }
 
   const sendMessage = async () => {
+    if (ending) return
     const q = input.trim()
     if (!q) return
     setInput('')
@@ -146,6 +149,7 @@ const LlmAssistantDemo = () => {
 
   const handleKeyDown = (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      if (ending || sending || uploading) return
       e.preventDefault()
       sendMessage()
     }
