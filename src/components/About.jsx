@@ -1,192 +1,132 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Award, Zap, Target, Users, Brain } from 'lucide-react'
+import { Award, Zap, Users, Brain, Shield, Terminal } from 'lucide-react'
 
 const About = () => {
   const stats = [
     {
-      icon: Award,
-      value: "3",
-      label: "Enterprise AI Projects",
-      color: "text-neon-blue"
+      value: "2",
+      label: "Flagship Production AI Systems",
+      sub: "Mobile & Enterprise"
     },
     {
-      icon: Zap,
-      value: "10K+",
-      label: "Documents Integrated",
-      color: "text-purple-gradient"
+      value: "158+",
+      label: "Automated Tests Passed",
+      sub: "Unit, Widget & E2E"
     },
     {
-      icon: Users,
-      value: "9",
-      label: "Business Functions Integrated",
-      color: "text-pink-gradient"
+      value: "Cross-Platform",
+      label: "Mobile & Web Ecosystems",
+      sub: "Flutter & Astro"
     },
     {
-      icon: Brain,
-      value: "2+",
-      label: "Advanced AI Models Deployed",
-      color: "text-neon-blue"
+      value: "Multimodal",
+      label: "Vision AI & Enterprise RAG",
+      sub: "OpenAI & Milvus"
     }
   ]
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  }
-
   return (
-    <section id="about" className="section-padding bg-gray-900/50">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
-            About Me
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Passionate AI Engineer with expertise in building production-ready AI systems
-            that solve real business problems at enterprise scale.
-          </p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-          {/* Left Column: Profile Photo & Stats */}
-          <div className="flex flex-col items-center space-y-8">
-            {/* Profile Photo for About Section */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="flex justify-center"
-            >
-              <div className="relative">
-                <motion.div
-                  className="w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden shadow-2xl"
-                  whileHover={{ scale: 1.02, rotate: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <img
-                    src="/images/profile.png"
-                    alt="Software Engineer / AI Engineer - About"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // Fallback to placeholder
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
-                  />
-                  {/* Fallback placeholder */}
-                  <div
-                    className="w-full h-full bg-gradient-to-br from-neon-blue/10 to-purple-gradient/10 flex items-center justify-center text-6xl font-bold gradient-text"
-                    style={{ display: 'none' }}
-                  >
-                    <Brain className="w-24 h-24" />
-                  </div>
-                </motion.div>
-                {/* Decorative elements */}
-                <div className="absolute -top-4 -left-4 w-8 h-8 bg-neon-blue/30 rounded-full animate-pulse"></div>
-                <div className="absolute -bottom-4 -right-4 w-6 h-6 bg-purple-gradient/30 rounded-full animate-pulse delay-500"></div>
-              </div>
-            </motion.div>
-
-            {/* Stats */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="grid grid-cols-2 gap-6 w-full max-w-md"
-            >
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="card-glow text-center group hover:scale-105 transition-transform duration-300"
-                >
-                  <stat.icon className={`w-8 h-8 ${stat.color} mx-auto mb-3 group-hover:animate-pulse`} />
-                  <div className={`text-3xl font-bold ${stat.color} mb-2`}>
-                    {stat.value}
-                  </div>
-                  <div className="text-gray-400 text-sm">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Right Column: Expertise */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
-          >
-            <div className="card-glow">
-              <h3 className="text-2xl font-semibold text-neon-blue mb-4">
-                AI & Machine Learning Expertise
-              </h3>
-              <p className="text-gray-300 leading-relaxed">
-                Specialized in developing sophisticated AI systems using cutting-edge technologies like
-                LangChain, RAG architectures, and advanced embedding models. Experience with both
-                commercial and open-source LLMs, optimizing for performance and cost-effectiveness.
-              </p>
-            </div>
-
-            <div className="card-glow">
-              <h3 className="text-2xl font-semibold text-purple-gradient mb-4">
-                Enterprise Integration
-              </h3>
-              <p className="text-gray-300 leading-relaxed">
-                Proven track record in integrating AI solutions with enterprise systems like SharePoint,
-                Oracle databases, and complex authentication systems. Focus on scalable, secure, and
-                maintainable architectures that meet enterprise requirements.
-              </p>
-            </div>
-          </motion.div>
+    <section id="about" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
+      {/* Section Header */}
+      <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/[0.08] bg-white/[0.02] text-slate-400 text-xs font-mono tracking-wider uppercase">
+          <Terminal className="w-3.5 h-3.5 text-sky-400" />
+          <span>About • Background & Philosophy</span>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="card-glow bg-gradient-to-r from-gray-800/50 to-gray-700/50"
-        >
-          <h3 className="text-2xl font-semibold gradient-text mb-4">
-            Core Philosophy
-          </h3>
-          <p className="text-gray-300 leading-relaxed">
-            I believe in building AI systems that are not just technically impressive, but genuinely
-            useful and reliable in production environments. My approach combines cutting-edge AI research
-            with solid engineering principles, ensuring that solutions are scalable, maintainable, and
-            aligned with business objectives.
-          </p>
-        </motion.div>
+        <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-white">
+          Engineering with <span className="bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-300 bg-clip-text text-transparent">Precision</span>
+        </h2>
+        <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
+          Bridging cutting-edge artificial intelligence with production-grade full-stack architecture. Committed to shipping maintainable, zero-compromise digital products.
+        </p>
+      </div>
+
+      {/* Main Grid: Portrait & Core Pillars */}
+      <div className="grid lg:grid-cols-12 gap-10 items-center mb-16">
+        {/* Left Column: Portrait & Stats (5 cols) */}
+        <div className="lg:col-span-5 space-y-8 flex flex-col items-center">
+          {/* Portrait Container */}
+          <div className="relative">
+            <div className="w-64 h-64 sm:w-72 sm:h-72 rounded-3xl overflow-hidden border border-white/[0.12] bg-[#0A0E17] p-2 shadow-2xl">
+              <img
+                src="/images/profile.png"
+                alt="Nazirman Portrait"
+                className="w-full h-full object-cover rounded-2xl"
+              />
+            </div>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
+            {stats.map((stat, index) => (
+              <div
+                key={index}
+                className="card-minimal p-4 text-center space-y-1"
+              >
+                <div className="text-lg sm:text-xl font-bold text-white font-mono">
+                  {stat.value}
+                </div>
+                <div className="text-[11px] font-medium text-slate-300 leading-snug">
+                  {stat.label}
+                </div>
+                <div className="text-[10px] font-mono text-slate-500">
+                  {stat.sub}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Column: 3 Architectural Pillars (7 cols) */}
+        <div className="lg:col-span-7 space-y-4">
+          <div className="card-minimal p-6 space-y-2 group">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-white group-hover:text-emerald-400 transition-colors">
+                Mobile & Consumer AI Engineering
+              </h3>
+              <span className="text-xs font-mono text-slate-500">Flutter • Vision AI</span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Architected and shipped <strong className="text-slate-200">FreshPlate</strong>, a production-grade Flutter & Supabase application utilizing multimodal OpenAI Vision Edge Functions, dynamic portion math engines, and RevenueCat subscription monetization backed by 158+ automated tests.
+            </p>
+          </div>
+
+          <div className="card-minimal p-6 space-y-2 group">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-white group-hover:text-sky-400 transition-colors">
+                Enterprise AI & Machine Learning
+              </h3>
+              <span className="text-xs font-mono text-slate-500">FastAPI • RAG</span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Specialized in building sophisticated enterprise RAG systems (<strong className="text-slate-200">URBuddy LLM</strong>) using LangChain, ColPali, and Milvus vector databases, orchestrated on high-performance multi-GPU environments for low-latency corporate semantic search.
+            </p>
+          </div>
+
+          <div className="card-minimal p-6 space-y-2 group">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-white group-hover:text-indigo-400 transition-colors">
+                Cloud Architecture & Zero-Trust Security
+              </h3>
+              <span className="text-xs font-mono text-slate-500">RLS • DevOps</span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Deep expertise in Supabase Row Level Security (RLS), enterprise NTLM/JWT authentication, automated release pipelines (Google Play & Apple TestFlight), and high-performance web frontends with Astro and Tailwind CSS.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Philosophy Banner */}
+      <div className="card-minimal p-8 max-w-4xl mx-auto text-center space-y-3">
+        <span className="text-xs font-mono uppercase tracking-wider text-slate-500 font-semibold block">
+          // Core Operating Principle
+        </span>
+        <p className="text-sm sm:text-base text-slate-300 leading-relaxed italic max-w-2xl mx-auto">
+          "Software that combines state-of-the-art machine intelligence with rigorous engineering discipline — deterministic data boundaries, comprehensive test coverage, and human-centric interfaces."
+        </p>
       </div>
     </section>
   )

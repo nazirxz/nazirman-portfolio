@@ -1,110 +1,50 @@
-🚀 URBuddy LLM – AI-Powered Document Intelligence System
-📋 Project Overview
+# 🌟 Nazirman Portfolio — Featured Projects
 
-URBuddy LLM adalah sistem AI enterprise untuk pemrosesan dan analisis dokumen korporasi dari berbagai sumber SharePoint Pertamina.
-Menggunakan pendekatan RAG (Retrieval-Augmented Generation), sistem ini mampu memberikan jawaban kontekstual dan intelligent berdasarkan konten dokumen perusahaan.
+---
 
-🛠 Tech Stack
-Backend & API
+## 1. 🥑 FreshPlate — AI Health & Financial Telemetry App & Web Platform
+> **Ecosystem**: Cross-platform Mobile App (iOS & Android) + Marketing Landing Page ([Freshaverstech](https://freshaverstech.com))  
+> **Status**: Production Ready • 158+ Automated Tests Passed • Store Release Ready
 
-FastAPI – Modern web framework (Python 3.10+)
+### 📋 Project Overview
+FreshPlate adalah aplikasi mobile lintas platform (iOS & Android) berbasis Flutter & Supabase yang memadukan pelacakan nutrisi berbasis Computer Vision dengan telemetri pengeluaran makanan secara real-time. Pengguna cukup mengambil foto piring makanan, dan sistem cerdas dalam waktu <3 detik akan mengenali menu, memecah makronutrisi & mikronutrisi, serta mengestimasi biaya makan dan dampaknya terhadap anggaran bulanan.
 
-Uvicorn – ASGI production server
-1
-RESTful API + Streaming Responses – Untuk real-time query dan document serving
+Didukung oleh landing page resmi modern berbasis **Astro & Tailwind CSS** ([Freshaverstech](https://freshaverstech.com)) dengan integrasi VIP Waitlist lead capture dan preview interaktif multi-mode.
 
-AI & Machine Learning
+### 🛠 Tech Stack
+- **Mobile Client**: Flutter 3.44+, Dart 3.12+, Provider / Bloc, Material 3, iOS Cupertino
+- **Vision AI Engine**: OpenAI Vision Multimodal APIs, Supabase Edge Functions (Deno/TypeScript)
+- **Database & Auth**: Supabase PostgreSQL, Row Level Security (RLS), Supabase Storage Buckets
+- **Monetization**: RevenueCat SDK, Google Play In-App Billing, Apple StoreKit 2 (3-Tier: Free, Individual, Family 5-Seat)
+- **Web & Landing Page**: Astro SSG/SSR, Tailwind CSS, TypeScript, Cloudflare / Vercel
+- **Quality Assurance & DevOps**: 158+ automated tests (unit, widget, E2E integration), Docker, Colima, Automated Bash Release Pipelines
 
-LangChain – LLM application framework
+### 🎯 Key Engineering Innovations
+1. **Multimodal AI Food Scanner**: Pengenalan makanan instan berbasis OpenAI Vision Edge Function dalam < 3 detik.
+2. **Real-time Financial Telemetry**: Menghubungkan asupan kalori/protein dengan biaya makan, melacak perbandingan masak sendiri vs makan di luar.
+3. **Dynamic Portion Engine**: 100% master data lock dengan rekalkulasi real-time saat porsi diubah oleh pengguna tanpa data drift.
+4. **Arsitektur Langganan 3-Tier**: Integrasi RevenueCat lengkap dengan gateway kode undangan untuk akses VIP/Family.
+5. **Keamanan & RLS**: Kebijakan Row Level Security ketat pada Supabase untuk melindungi data biometrik dan keuangan pengguna.
+6. **158+ Automated Tests**: 0 linter errors, dual platform release build scripts untuk Android (APK/AAB) dan iOS (IPA/TestFlight).
 
-Sentence Transformers – Embedding generation
+---
 
-ColPali – Advanced retrieval system
+## 2. 🚀 URBuddy LLM – AI-Powered Document Intelligence System
+> **Scope**: Enterprise Document Intelligence & Corporate Knowledge Base  
+> **Status**: Enterprise Production (On-Premise)
 
-OpenAI / Anthropic APIs – LLM integration
+### 📋 Project Overview
+URBuddy LLM adalah sistem AI enterprise untuk pemrosesan dan analisis dokumen korporasi dari berbagai sumber SharePoint Pertamina. Menggunakan pendekatan RAG (Retrieval-Augmented Generation), sistem ini mampu memberikan jawaban kontekstual dan cerdas berdasarkan konten dokumen perusahaan dan database internal.
 
-Vector Database – High-performance embedding storage
+### 🛠 Tech Stack
+- **Backend & API**: FastAPI (Python 3.10+), Uvicorn ASGI production server, RESTful API + Streaming responses
+- **AI & Machine Learning**: LangChain, Sentence Transformers, ColPali, OpenAI / Anthropic APIs, Milvus Vector DB
+- **Document Processing**: SharePoint Integration (5+ enterprise sites), OCR (SmolDoc), PDF/PPT/DOC Extractors, Text Chunking
+- **Database & Storage**: Oracle Database (primary) via cx_Oracle, MSSQL Server, Milvus Vector Database, Redis
+- **Security**: NTLM Authentication, Fernet Encryption, JWT Tokens, Multi-site Credential Manager
+- **Infrastructure & DevOps**: Docker & Docker Compose, Load Balancer, Multi-GPU H100 Orchestration, Comprehensive Logging
 
-Document Processing
-
-SharePoint Integration – Multi-site access (URBuddy, TCS, DWI, STK, dll.)
-
-OCR (SmolDoc) – Extract text dari scan/image
-
-PDF/PPT/DOC Extractors – Multi-format ingestion
-
-Text Chunking – Intelligent segmentation for RAG
-
-Database & Storage
-
-Oracle Database (primary) via cx_Oracle
-
-MSSQL Server (secondary support)
-
-Vector DB – Embedding persistence
-
-Authentication & Security
-
-NTLM Authentication – SharePoint secure access
-
-Fernet Encryption – Credential protection
-
-JWT Tokens – Session management
-
-Multi-site Credential Manager
-
-Infrastructure & DevOps
-
-Docker & Docker Compose – Multi-service containerization
-
-Load Balancer – Scalable traffic handling
-
-Multi-GPU Support – H100-ready for LLM workloads
-
-Comprehensive Logging & Monitoring
-
-🏗 System Architecture
-
-Core RAG Engine – Semantic search + retrieval
-
-Document Proxy Pattern – Abstraction for SharePoint access
-
-Component Manager – Modular services (scalable & pluggable)
-
-Caching Layer – Faster response & lower infra cost
-
-🎯 Key Features
-
-Multi-site SharePoint Integration (5+ enterprise sites)
-
-Intelligent Semantic Retrieval & Document Search
-
-Real-time Document Processing (with OCR)
-
-Advanced RAG Implementation
-
-Scalable Architecture with Load Balancing
-
-Production-ready with GPU orchestration
-
-📊 Business Impact
-
-Unified Document Access – Integrasi 5+ SharePoint site
-
-AI-powered Search – Temukan informasi lebih cepat & relevan
-
-Automation – Eliminasi manual document lookup
-
-Knowledge Management – Knowledge base perusahaan yang terpusat
-
-📈 Portfolio Value
-
-Enterprise-grade AI System – Sudah terbukti di lingkungan produksi
-
-Full-stack Development – Backend, AI, Database, DevOps
-
-Complex Integration Challenges – SharePoint, Oracle/MSSQL, LLM APIs
-
-Scalable & Modular – Future-proof untuk integrasi sistem lain
-
-Modern AI Tech Stack – Menggunakan LangChain, ColPali, GPU orchestration
+### 📊 Business Impact & Value
+- **Unified Document Access**: Integrasi 5+ SharePoint site dalam satu gerbang pencarian.
+- **AI-powered Search**: Menemukan informasi dokumen korporat lebih cepat & relevan.
+- **Enterprise-grade AI**: Telah teruji dan berjalan stabil di lingkungan produksi on-premise.

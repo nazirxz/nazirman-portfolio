@@ -1,235 +1,218 @@
 import React, { useState } from 'react'
-import { motion } from 'framer-motion'
 import {
   Mail,
   Phone,
-  MapPin,
   Linkedin,
   Github,
-  ExternalLink,
-  Send,
-  MessageSquare,
-  Calendar,
-  Download,
-  CheckCircle
+  ArrowUpRight,
+  Terminal,
+  Copy,
+  Check,
+  Send
 } from 'lucide-react'
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+  const [submitted, setSubmitted] = useState(false)
 
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+  const handleCopyCmd = () => {
+    navigator.clipboard.writeText('npx nazirman')
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setIsSubmitting(true)
-
-    // Simulate form submission
+    setSubmitted(true)
     setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSubmitted(true)
+      setSubmitted(false)
       setFormData({ name: '', email: '', message: '' })
-
-      // Reset success message after 3 seconds
-      setTimeout(() => setIsSubmitted(false), 3000)
-    }, 2000)
-  }
-
-  const contactInfo = [
-    {
-      icon: Mail,
-      label: "Email",
-      value: "nazirman.it@gmail.com",
-      href: "mailto:nazirman.it@gmail.com",
-      color: "text-neon-blue"
-    },
-    {
-      icon: Phone,
-      label: "Phone",
-      value: "+62 821-6654-3955",
-      href: "tel:+6282166543955",
-      color: "text-purple-gradient"
-    },
-    {
-      icon: MapPin,
-      label: "Location",
-      value: "Indonesia",
-      href: "#",
-      color: "text-pink-gradient"
-    },
-    {
-      icon: Calendar,
-      label: "Available",
-      value: "Open to opportunities",
-      href: "#",
-      color: "text-yellow-400"
-    }
-  ]
-
-  const socialLinks = [
-    {
-      icon: Linkedin,
-      name: "LinkedIn",
-      href: "https://www.linkedin.com/in/nazirman/",
-      color: "hover:text-blue-400",
-      bgColor: "hover:bg-blue-400/10"
-    },
-    {
-      icon: Github,
-      name: "GitHub",
-      href: "https://github.com/nazirxz",
-      color: "hover:text-gray-400",
-      bgColor: "hover:bg-gray-400/10"
-    },
-    {
-      icon: ExternalLink,
-      name: "Portfolio",
-      href: "#",
-      color: "hover:text-neon-blue",
-      bgColor: "hover:bg-neon-blue/10"
-    },
-    {
-      icon: Download,
-      name: "Resume",
-      href: "#",
-      color: "hover:text-purple-400",
-      bgColor: "hover:bg-purple-400/10"
-    }
-  ]
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6
-      }
-    }
+    }, 4000)
   }
 
   return (
-    <section id="contact" className="section-padding bg-gray-900/50">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
-            Get In Touch
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Ready to discuss your next AI project? Let's build something amazing together.
-          </p>
-        </motion.div>
+    <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
+      {/* Header */}
+      <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/[0.08] bg-white/[0.02] text-slate-400 text-xs font-mono tracking-wider uppercase">
+          <Terminal className="w-3.5 h-3.5 text-sky-400" />
+          <span>Contact & Inquiries</span>
+        </div>
 
-        <div className="flex justify-center">
-          <div className="max-w-2xl w-full">
-            {/* Contact Information */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="space-y-8"
+        <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-white">
+          Let's Build Something <span className="bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-300 bg-clip-text text-transparent">Exceptional</span>
+        </h2>
+        <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
+          Open to enterprise consulting, high-impact AI engineering roles, and custom mobile/web architecture development.
+        </p>
+
+        {/* Quick CLI Command Box */}
+        <div className="pt-2 flex justify-center">
+          <button
+            type="button"
+            onClick={handleCopyCmd}
+            className="group inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-white/[0.2] transition-colors font-mono text-xs text-slate-300 cursor-pointer"
+          >
+            <span className="text-sky-400">$</span>
+            <span>npx nazirman</span>
+            <div className="p-1 rounded bg-white/[0.05] text-slate-400 group-hover:text-white transition-colors ml-1">
+              {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            </div>
+          </button>
+        </div>
+      </div>
+
+      {/* Main Grid: Direct Channels (5 cols) & Quick Message (7 cols) */}
+      <div className="grid lg:grid-cols-12 gap-8 items-start mb-24">
+        {/* Left Column: Direct Links (5 cols) */}
+        <div className="lg:col-span-5 space-y-3">
+          <a
+            href="mailto:nazirman.it@gmail.com"
+            className="card-minimal p-5 flex items-center justify-between group block"
+          >
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-sky-400 group-hover:scale-105 transition-transform">
+                <Mail className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-[11px] font-mono text-slate-500 block">Direct Email</span>
+                <span className="text-sm font-semibold text-white group-hover:text-sky-400 transition-colors">
+                  nazirman.it@gmail.com
+                </span>
+              </div>
+            </div>
+            <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-colors" />
+          </a>
+
+          <a
+            href="tel:+6282166543955"
+            className="card-minimal p-5 flex items-center justify-between group block"
+          >
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
+                <Phone className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-[11px] font-mono text-slate-500 block">Phone / WhatsApp</span>
+                <span className="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors">
+                  +62 821-6654-3955
+                </span>
+              </div>
+            </div>
+            <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-colors" />
+          </a>
+
+          <div className="grid grid-cols-2 gap-3 pt-1">
+            <a
+              href="https://www.linkedin.com/in/nazirman/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card-minimal p-4 flex items-center justify-between group"
             >
-              <motion.div variants={itemVariants}>
-                <h3 className="text-2xl font-bold gradient-text mb-6">
-                  Let's Connect
-                </h3>
-                <p className="text-gray-300 leading-relaxed mb-8">
-                  I'm always interested in discussing new opportunities, innovative projects,
-                  and ways to solve complex business challenges with cutting-edge technology.
-                  Whether you're looking to build an enterprise AI system, develop mobile applications,
-                  create scalable web solutions, or need consultation on your existing infrastructure,
-                  I'd love to hear from you.
-                </p>
-              </motion.div>
+              <div className="flex items-center gap-2.5">
+                <Linkedin className="w-4 h-4 text-sky-400" />
+                <span className="text-xs font-semibold text-white group-hover:text-sky-400 transition-colors">
+                  LinkedIn
+                </span>
+              </div>
+              <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-white transition-colors" />
+            </a>
 
-              {/* Contact Details */}
-              <motion.div variants={itemVariants} className="space-y-4">
-                {contactInfo.map((info, index) => (
-                  <motion.a
-                    key={index}
-                    href={info.href}
-                    whileHover={{ scale: 1.05, x: 10 }}
-                    className="flex items-center space-x-4 p-4 card-glow bg-gray-800/30 hover:bg-gray-800/50 transition-all duration-300 group"
-                  >
-                    <div className={`p-3 rounded-full bg-gray-700/50 ${info.color} group-hover:animate-pulse`}>
-                      <info.icon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-gray-400 text-sm">{info.label}</div>
-                      <div className={`font-medium ${info.color}`}>{info.value}</div>
-                    </div>
-                  </motion.a>
-                ))}
-              </motion.div>
-
-              {/* Social Links */}
-              <motion.div variants={itemVariants}>
-                <h4 className="text-lg font-semibold text-gray-300 mb-4">
-                  Connect on Social
-                </h4>
-                <div className="flex space-x-4">
-                  {socialLinks.map((social, index) => (
-                    <motion.a
-                      key={index}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      className={`p-3 rounded-full bg-gray-800/50 border border-gray-700 ${social.color} ${social.bgColor} transition-all duration-300 group`}
-                    >
-                      <social.icon className="w-5 h-5 group-hover:animate-pulse" />
-                    </motion.a>
-                  ))}
-                </div>
-              </motion.div>
-            </motion.div>
+            <a
+              href="https://github.com/nazirxz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card-minimal p-4 flex items-center justify-between group"
+            >
+              <div className="flex items-center gap-2.5">
+                <Github className="w-4 h-4 text-slate-300" />
+                <span className="text-xs font-semibold text-white group-hover:text-white transition-colors">
+                  GitHub
+                </span>
+              </div>
+              <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-white transition-colors" />
+            </a>
           </div>
         </div>
 
-        {/* Footer */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-center mt-16 pt-8 border-t border-gray-700/50"
-        >
-          <p className="text-gray-400">
-            © 2025 Software Engineer Portfolio. Built with React, TailwindCSS, and Framer Motion.
+        {/* Right Column: Quick Dispatch Form (7 cols) */}
+        <div className="lg:col-span-7 card-minimal p-6 sm:p-8">
+          <h3 className="text-lg font-bold text-white mb-2">Send a Message</h3>
+          <p className="text-xs text-slate-400 mb-6">
+            Leave a brief note and I'll respond within 24 hours.
           </p>
-          <p className="text-gray-500 text-sm mt-2">
-            Specializing in AI/ML Development, Full-Stack Web Apps, and Mobile Solutions
-          </p>
-        </motion.div>
+
+          {submitted ? (
+            <div className="py-12 text-center space-y-2">
+              <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+                <Check className="w-6 h-6" />
+              </div>
+              <h4 className="text-base font-bold text-white">Message Dispatched</h4>
+              <p className="text-xs text-slate-400">Thank you for reaching out. I'll get back to you shortly.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-mono text-slate-400">Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Your name or company"
+                    className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400/50 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-mono text-slate-400">Email</label>
+                  <input
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="your.email@example.com"
+                    className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400/50 transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-mono text-slate-400">Project / Scope</label>
+                <textarea
+                  rows={4}
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  placeholder="Tell me about your application, timeline, or objectives..."
+                  className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] p-3.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400/50 transition-colors resize-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-slate-950 font-semibold text-xs sm:text-sm hover:bg-slate-200 transition-colors cursor-pointer"
+              >
+                <span>Dispatch Message</span>
+                <Send className="w-3.5 h-3.5" />
+              </button>
+            </form>
+          )}
+        </div>
       </div>
+
+      {/* Minimalist Footer */}
+      <footer className="pt-10 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse" />
+          <span>Location: Indonesia (UTC+7) • Global Remote</span>
+        </div>
+
+        <div>
+          <span>© {new Date().getFullYear()} Nazirman. All architectures reserved.</span>
+        </div>
+      </footer>
     </section>
   )
 }

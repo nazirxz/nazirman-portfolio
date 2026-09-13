@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
+import { Terminal, Send, Upload, Trash2, FileText, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react'
 
 const API_BASE = import.meta.env.VITE_CHATDOC_API_BASE || 'https://chatdoc-api.vercel.app'
-
 const SESSION_KEY = 'chatdoc_session_id'
 
 const uuidv4 = () => {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID()
-  // Fallback
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8)
     return v.toString(16)
@@ -20,7 +20,7 @@ const LlmAssistantDemo = () => {
   const [uploading, setUploading] = useState(false)
   const [uploadMsg, setUploadMsg] = useState('')
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Please upload a document above, then ask your questions here.' }
+    { role: 'assistant', content: 'Ready for document ingestion. Upload a file above to begin semantic Q&A.' }
   ])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
@@ -47,7 +47,6 @@ const LlmAssistantDemo = () => {
     if (ending) return
     const f = e.target.files?.[0]
     if (!f) return
-    // Revoke old URL
     if (fileUrl) URL.revokeObjectURL(fileUrl)
     setFile(f)
     const url = URL.createObjectURL(f)
@@ -62,40 +61,32 @@ const LlmAssistantDemo = () => {
   }
 
   const handleUpload = async () => {
-    if (ending) return
-    if (!file) {
-      setUploadMsg('Please choose a file first.')
-      return
-    }
+    if (!file || uploading || ending) return
     setUploading(true)
     setUploadMsg('')
     try {
-      const form = new FormData()
-      form.append('file', file)
-      if (sessionId) form.append('session_id', sessionId)
+      const fd = new FormData()
+      fd.append('file', file)
+      fd.append('session_id', sessionId)
       const res = await fetch(`${API_BASE}/api/v1/chat/upload`, {
         method: 'POST',
-        body: form
+        body: fd
       })
       const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data?.message || `Upload failed (HTTP ${res.status})`)
-      if (data?.session_id && data.session_id !== sessionId) {
-        setSessionId(data.session_id)
-      }
-      setUploadMsg(data?.message || `File '${file.name}' uploaded and processed successfully.`)
+      if (!res.ok) throw new Error(data?.detail || data?.message || `Upload failed (HTTP ${res.status})`)
+      setUploadMsg(data?.message || 'File indexed successfully. You may now query this document.')
       setMessages((m) => [
         ...m,
-        { role: 'assistant', content: 'Document processed successfully. What would you like to know?' }
+        { role: 'assistant', content: `Ingested ${file.name}. Ask any question regarding its content.` }
       ])
     } catch (err) {
-      setUploadMsg(`Upload failed: ${err.message}`)
+      setUploadMsg(`Error: ${err.message}`)
     } finally {
       setUploading(false)
     }
   }
 
   const sendMessage = async () => {
-    if (ending) return
     const q = input.trim()
     if (!q) return
     setInput('')
@@ -108,11 +99,11 @@ const LlmAssistantDemo = () => {
         body: JSON.stringify({ query: q, session_id: sessionId })
       })
       const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data?.detail || data?.message || `Failed to get a response (HTTP ${res.status})`)
+      if (!res.ok) throw new Error(data?.detail || data?.message || `Failed (HTTP ${res.status})`)
       const content = data?.response || JSON.stringify(data)
       setMessages((m) => [...m, { role: 'assistant', content }])
     } catch (err) {
-      setMessages((m) => [...m, { role: 'assistant', content: `An error occurred: ${err.message}` }])
+      setMessages((m) => [...m, { role: 'assistant', content: `Execution error: ${err.message}` }])
     } finally {
       setSending(false)
       inputRef.current?.focus()
@@ -123,14 +114,9 @@ const LlmAssistantDemo = () => {
     if (!sessionId) return
     setEnding(true)
     try {
-      const res = await fetch(`${API_BASE}/api/v1/chat/session/${sessionId}`, { method: 'DELETE' })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data?.message || `Failed to end session (HTTP ${res.status})`)
-      setUploadMsg(data?.message || 'Session ended and files cleared.')
-    } catch (err) {
-      setUploadMsg(`End Chat failed: ${err.message}`)
+      await fetch(`${API_BASE}/api/v1/chat/session/${sessionId}`, { method: 'DELETE' }).catch(() => ({}))
+      setUploadMsg('Session cleared.')
     } finally {
-      // Reset local state regardless of API result to keep UX clean
       if (fileUrl) URL.revokeObjectURL(fileUrl)
       setFile(null)
       setFileUrl(null)
@@ -138,14 +124,10 @@ const LlmAssistantDemo = () => {
       const newId = uuidv4()
       setSessionId(newId)
       try { localStorage.setItem(SESSION_KEY, newId) } catch {}
-      setMessages([{ role: 'assistant', content: 'New chat started. Upload a document or ask a question.' }])
+      setMessages([{ role: 'assistant', content: 'New session initialized. Upload a file to test RAG retrieval.' }])
       setEnding(false)
     }
   }
-
-  useEffect(() => {
-    try { localStorage.setItem(SESSION_KEY, sessionId) } catch {}
-  }, [sessionId])
 
   const handleKeyDown = (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
@@ -156,140 +138,150 @@ const LlmAssistantDemo = () => {
   }
 
   return (
-    <section id="chat-doc" className="section-padding bg-gray-800/30">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-2">Chat Doc</h2>
-          <p className="text-gray-300">Upload a document, preview it, and ask questions via chat.</p>
+    <section id="chat-doc" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="text-center max-w-3xl mx-auto mb-16 space-y-4"
+      >
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/[0.08] bg-white/[0.02] text-slate-400 text-xs font-mono tracking-wider uppercase">
+          <Terminal className="w-3.5 h-3.5 text-sky-400" />
+          <span>Live Interactive Sandbox</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left: Upload + Chat */}
-          <div className="flex flex-col h-[70vh] card-glow">
-            {/* Upload bar */}
-            <div className="p-4 border-b border-gray-700/60">
-              <div className="flex items-center gap-3 flex-wrap">
-                <label
-                  aria-disabled={ending}
-                  className={`inline-flex items-center px-3 py-2 rounded-lg bg-gray-700/60 text-sm ${ending ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'hover:bg-gray-700 cursor-pointer'}`}
-                >
-                  <input type="file" className="hidden" onChange={handleSelectFile} />
-                  <span>Choose File</span>
-                </label>
-                <button
-                  onClick={handleUpload}
-                  disabled={!file || uploading || ending}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    (uploading || ending) ? 'bg-gray-700 text-gray-300' : 'bg-neon-blue text-white hover:brightness-110'
-                  }`}
-                >
-                  {uploading ? 'Uploading...' : (ending ? 'Please wait...' : 'Upload to Assistant')}
-                </button>
-                <button
-                  onClick={endChat}
-                  disabled={ending || uploading || sending}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium text-gray-100 ${ending ? 'bg-gray-700 cursor-not-allowed' : 'bg-gray-700/70 hover:bg-gray-700'}`}
-                >
-                  {ending ? (
-                    <span className="inline-flex items-center">
-                      <span className="inline-block h-4 w-4 border-2 border-white/60 border-t-transparent rounded-full animate-spin mr-2"></span>
-                      Ending...
-                    </span>
-                  ) : 'End Chat'}
-                </button>
-                {file && (
-                  <span className="text-xs text-gray-300 truncate">{file.name} ({Math.ceil(file.size/1024)} KB)</span>
-                )}
-                {sessionId && (
-                  <span className="text-[10px] text-gray-400">Session: {sessionId}</span>
-                )}
-              </div>
-              {uploadMsg && (
-                <p className="mt-2 text-xs text-gray-300">{uploadMsg}</p>
-              )}
+        <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-white">
+          Document AI <span className="bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-300 bg-clip-text text-transparent">Sandbox</span>
+        </h2>
+        <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
+          Test interactive multi-format document ingestion, semantic chunking, and LLM Q&A live in your browser.
+        </p>
+      </motion.div>
+
+      {/* Main Terminal Frame */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column: Chat Terminal (7 cols) */}
+        <div className="lg:col-span-7 card-minimal overflow-hidden flex flex-col h-[640px]">
+          {/* Top Window Chrome */}
+          <div className="flex items-center justify-between px-4 py-3 bg-[#06080E] border-b border-white/[0.08]">
+            <div className="flex items-center space-x-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block" />
+              <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 inline-block" />
+              <span className="w-2.5 h-2.5 rounded-full bg-green-500/80 inline-block" />
+              <span className="text-xs font-mono text-slate-400 ml-2 font-medium">doc_assistant.sh</span>
             </div>
 
-            {/* Chat area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              {messages.map((m, idx) => (
-                <div key={idx} className={`max-w-[90%] md:max-w-[80%] ${m.role === 'user' ? 'ml-auto' : ''}`}>
-                  <div className={`${m.role === 'user' ? 'bg-neon-blue text-white' : 'bg-gray-700/60 text-gray-100'} px-3 py-2 rounded-lg whitespace-pre-wrap`}>
-                    {m.content}
-                  </div>
-                </div>
-              ))}
-              {sending && (
-                <div className="text-xs text-gray-400">Assistant is typing...</div>
-              )}
-            </div>
-
-            {/* Input */}
-            <div className="p-3 border-t border-gray-700/60">
-              <div className="flex gap-2">
-                <textarea
-                  ref={inputRef}
-                  rows={2}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder={"Ask about the document... (Ctrl/Cmd+Enter to send)"}
-                  className="flex-1 resize-none rounded-lg bg-gray-800 text-gray-100 p-3 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-blue/50"
-                />
-                <button
-                  onClick={sendMessage}
-                  disabled={!input.trim() || sending || uploading || ending}
-                  className={`px-4 py-2 rounded-lg text-sm font-semibold ${
-                    (sending || ending) ? 'bg-gray-700 text-gray-300' : 'bg-purple-gradient text-white hover:brightness-110'
-                  }`}
-                >
-                  Send
-                </button>
-              </div>
-            </div>
+            <button
+              onClick={endChat}
+              disabled={ending || uploading || sending}
+              className="text-[11px] font-mono text-slate-400 hover:text-white px-2.5 py-1 rounded bg-white/[0.04] border border-white/[0.06] transition-colors cursor-pointer"
+            >
+              Reset Session
+            </button>
           </div>
 
-          {/* Right: Viewer */}
-          <div className="h-[70vh] card-glow overflow-hidden">
-            <div className="p-4 border-b border-gray-700/60 flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold">Document Viewer</h3>
-                <p className="text-xs text-gray-400">Local preview of the selected file</p>
-              </div>
-              {file && (
-                <span className="text-xs text-gray-300 truncate max-w-[50%]">{file.name}</span>
-              )}
+          {/* Upload Strip */}
+          <div className="p-3.5 bg-white/[0.01] border-b border-white/[0.06] flex items-center justify-between gap-3 flex-wrap text-xs">
+            <div className="flex items-center gap-2">
+              <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-slate-200 hover:bg-white/[0.08] cursor-pointer transition-colors font-mono">
+                <Upload className="w-3.5 h-3.5 text-sky-400" />
+                <span>Choose Document</span>
+                <input type="file" className="hidden" onChange={handleSelectFile} />
+              </label>
+
+              <button
+                onClick={handleUpload}
+                disabled={!file || uploading || ending}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-slate-950 font-semibold hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors font-mono"
+              >
+                {uploading ? 'Processing...' : 'Index Document'}
+              </button>
             </div>
 
-            <div className="h-[calc(70vh-72px)] w-full bg-gray-900 flex items-center justify-center overflow-auto">
-              {!file && (
-                <div className="text-gray-400 text-sm">No file yet. Choose and upload a document on the left panel.</div>
-              )}
+            {file && (
+              <span className="text-[11px] font-mono text-slate-400 truncate max-w-[200px]">
+                {file.name} ({(file.size / 1024).toFixed(0)} KB)
+              </span>
+            )}
+          </div>
 
-              {file && isPdf && fileUrl && (
-                <iframe title="pdf-viewer" src={fileUrl} className="w-full h-full" />
-              )}
+          {uploadMsg && (
+            <div className="px-4 py-2 bg-sky-500/[0.06] border-b border-sky-500/20 text-[11px] font-mono text-sky-300">
+              {uploadMsg}
+            </div>
+          )}
 
-              {file && isImage && fileUrl && (
-                <img src={fileUrl} alt="preview" className="max-h-full max-w-full object-contain" />
-              )}
-
-              {file && isTextLike && (
-                <pre className="w-full h-full p-4 text-xs text-gray-200 whitespace-pre-wrap overflow-auto">{fileText || 'Loading text preview...'}</pre>
-              )}
-
-              {file && !isPdf && !isImage && !isTextLike && fileUrl && (
-                <div className="p-4 text-center">
-                  <p className="text-gray-300 mb-2">Preview is not available for this file type.</p>
-                  <a href={fileUrl} download={file?.name} className="text-neon-blue underline">Download file</a>
+          {/* Chat Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 font-sans">
+            {messages.map((m, idx) => (
+              <div key={idx} className={`max-w-[85%] ${m.role === 'user' ? 'ml-auto' : ''}`}>
+                <div
+                  className={`px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed ${
+                    m.role === 'user'
+                      ? 'bg-white text-slate-950 font-medium'
+                      : 'bg-white/[0.03] border border-white/[0.08] text-slate-200'
+                  }`}
+                >
+                  {m.content}
                 </div>
-              )}
+              </div>
+            ))}
+            {sending && (
+              <div className="text-xs font-mono text-slate-500 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-sky-400 animate-ping" />
+                <span>Computing neural embeddings...</span>
+              </div>
+            )}
+          </div>
+
+          {/* Input Box */}
+          <div className="p-3 border-t border-white/[0.08] bg-[#06080E]/60">
+            <div className="flex items-center gap-2">
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask about the document... (Press Enter)"
+                className="flex-1 rounded-xl bg-white/[0.03] border border-white/[0.08] px-3.5 py-2.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-400/50 transition-colors"
+              />
+              <button
+                onClick={sendMessage}
+                disabled={!input.trim() || sending || uploading || ending}
+                className="p-2.5 rounded-xl bg-white text-slate-950 font-semibold hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                <Send className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Helper notes */}
-        <div className="mt-4 text-xs text-gray-400 text-center">
-          <p>Server: {API_BASE}. Ensure the API is running and CORS allows this origin.</p>
+        {/* Right Column: Document Viewer (5 cols) */}
+        <div className="lg:col-span-5 card-minimal overflow-hidden flex flex-col h-[640px]">
+          <div className="px-4 py-3 bg-[#06080E] border-b border-white/[0.08] flex items-center justify-between">
+            <span className="text-xs font-mono text-slate-400 font-medium">Document Inspector</span>
+            {file && <span className="text-[11px] font-mono text-emerald-400">active_preview</span>}
+          </div>
+
+          <div className="flex-1 bg-[#04060A] flex items-center justify-center p-4 overflow-auto">
+            {!file ? (
+              <div className="text-center text-slate-500 text-xs font-mono max-w-xs leading-relaxed">
+                <FileText className="w-8 h-8 text-slate-600 mx-auto mb-2" />
+                <span>No document loaded. Upload a PDF, text, or image file on the left to preview.</span>
+              </div>
+            ) : isPdf && fileUrl ? (
+              <iframe title="pdf-viewer" src={fileUrl} className="w-full h-full rounded border-0" />
+            ) : isImage && fileUrl ? (
+              <img src={fileUrl} alt="preview" className="max-h-full max-w-full object-contain rounded" />
+            ) : (
+              <pre className="w-full h-full text-[11px] font-mono text-slate-300 whitespace-pre-wrap overflow-auto p-2">
+                {fileText || 'Loading text representation...'}
+              </pre>
+            )}
+          </div>
         </div>
       </div>
     </section>

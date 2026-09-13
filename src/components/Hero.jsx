@@ -1,203 +1,124 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Brain, Code, Database, Cpu } from 'lucide-react'
+import { ArrowUpRight, Sparkles, Terminal, ShieldCheck } from 'lucide-react'
+import HeroScene3D from './three/HeroScene3D'
 
 const Hero = () => {
-  const [displayedText, setDisplayedText] = useState('')
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const fullText = "AI/ML Engineer • Full-Stack Developer • Mobile & Web Specialist"
+  const [displayedRole, setDisplayedRole] = useState('')
+  const [roleIndex, setRoleIndex] = useState(0)
+  const fullRole = "AI Systems Engineer • Cross-Platform Mobile & Web Architect"
 
   useEffect(() => {
-    if (currentIndex < fullText.length) {
+    if (roleIndex < fullRole.length) {
       const timeoutId = setTimeout(() => {
-        setDisplayedText(prev => prev + fullText[currentIndex])
-        setCurrentIndex(prev => prev + 1)
-      }, 100) // Typing speed: 100ms per character
-
+        setDisplayedRole(prev => prev + fullRole[roleIndex])
+        setRoleIndex(prev => prev + 1)
+      }, 50)
       return () => clearTimeout(timeoutId)
     }
-  }, [currentIndex, fullText])
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-        duration: 0.6
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  }
-
-  const floatingIcons = [
-    { Icon: Brain, delay: 0, className: "top-20 left-10" },
-    { Icon: Code, delay: 0.5, className: "top-32 right-16" },
-    { Icon: Database, delay: 1, className: "top-48 left-1/4" },
-    { Icon: Cpu, delay: 1.5, className: "top-40 right-1/3" }
-  ]
+  }, [roleIndex, fullRole])
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-        <div className="absolute inset-0 bg-gradient-to-r from-neon-blue/10 via-transparent to-purple-gradient/10"></div>
-      </div>
+    <section id="hero" className="relative min-h-[92vh] flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+      {/* Subtle Ambient Radial Lighting */}
+      <div className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-sky-500/10 rounded-full blur-[120px] pointer-events-none -z-10" />
+      <div className="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none -z-10" />
 
-      {/* Floating Icons */}
-      {floatingIcons.map(({ Icon, delay, className }, index) => (
+      <div className="w-full grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        {/* Left Column: Minimalist Editorial Content (7 Cols) */}
         <motion.div
-          key={index}
-          className={`absolute ${className} hidden lg:block`}
-          initial={{ y: 0, opacity: 0.3 }}
-          animate={{
-            y: [-20, 20, -20],
-            opacity: [0.3, 0.6, 0.3]
-          }}
-          transition={{
-            duration: 4,
-            delay,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-7 space-y-8 text-left"
         >
-          <Icon className="w-8 h-8 text-neon-blue/50" />
-        </motion.div>
-      ))}
+          {/* Status Badge */}
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/[0.06] backdrop-blur-md text-xs font-medium text-emerald-300">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>Available for AI Engineering & Mobile Architectures</span>
+          </div>
 
-      <div className="relative z-10 text-center max-w-5xl mx-auto px-4">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-8"
-        >
-          {/* Profile Photo */}
-          <motion.div
-            variants={itemVariants}
-            className="flex justify-center mb-8"
-          >
-            <div className="relative">
-              <motion.div
-                className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-neon-blue/30 shadow-lg"
-                whileHover={{ scale: 1.05 }}
-                animate={{
-                  boxShadow: [
-                    "0 0 20px rgba(0, 212, 255, 0.3)",
-                    "0 0 40px rgba(0, 212, 255, 0.6)",
-                    "0 0 20px rgba(0, 212, 255, 0.3)"
-                  ]
-                }}
-                transition={{
-                  boxShadow: {
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }
-                }}
-              >
-                <img
-                  src="/images/profile.png"
-                  alt="Software Engineer / AI Engineer Profile"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback to a placeholder if image doesn't exist
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'flex';
-                  }}
-                />
-                {/* Fallback placeholder */}
-                <div
-                  className="w-full h-full bg-gradient-to-br from-neon-blue/20 to-purple-gradient/20 flex items-center justify-center text-4xl md:text-5xl font-bold gradient-text"
-                  style={{ display: 'none' }}
-                >
-                  AI
-                </div>
-              </motion.div>
-              {/* Animated ring */}
-              <motion.div
-                className="absolute inset-0 rounded-full border-2 border-neon-blue/20"
-                animate={{ rotate: 360 }}
-                transition={{
-                  duration: 10,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              />
-            </div>
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6">
-              <span className="gradient-text">Software Engineer</span>
+          {/* Main Titles */}
+          <div className="space-y-3">
+            <h2 className="text-sm uppercase tracking-[0.25em] text-slate-400 font-semibold font-mono">
+              Nazirman • Portfolio
+            </h2>
+            <h1 className="text-4xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-[1.08]">
+              Architecting <span className="bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-300 bg-clip-text text-transparent">Intelligent</span> Systems.
             </h1>
-            <div className="text-xl md:text-2xl text-gray-300 mb-4 h-8">
-              <span>{displayedText}</span>
-              <motion.span
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 1, repeat: Infinity }}
-                className="text-neon-blue"
-              >
-                |
-              </motion.span>
+            <div className="text-base sm:text-xl font-mono text-slate-300 pt-1 flex items-center gap-1">
+              <Terminal className="w-4 h-4 text-sky-400 inline-block mr-1" />
+              <span>{displayedRole}</span>
+              <span className="inline-block w-2 h-4 bg-sky-400 animate-pulse ml-0.5" />
             </div>
-            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-              Experienced in building enterprise-grade AI systems, scalable web applications,
-              and mobile solutions. Specializing in LLM applications, RAG systems, full-stack development,
-              and transforming complex business challenges into intelligent automation solutions.
-            </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-wrap justify-center gap-4 text-sm md:text-base"
-          >
+          {/* Bio Description */}
+          <p className="text-base sm:text-lg text-slate-400 max-w-2xl leading-relaxed font-normal">
+            Specializing in high-performance production AI applications — from multimodal computer vision mobile apps with real-time telemetry to enterprise-grade on-premise RAG systems and cloud infrastructure.
+          </p>
+
+          {/* Minimalist Tech Highlights */}
+          <div className="flex flex-wrap gap-2 pt-1">
             {[
-              "🧠 AI/ML Development",
-              "⚛️ Full-Stack Web Apps",
-              "📱 Mobile Development",
-              "🔍 RAG Systems",
-              "🏗️ Backend Architecture",
-              "🚀 Production Systems"
+              "Multimodal Vision AI",
+              "Flutter & Dart 3.12+",
+              "Enterprise RAG & Milvus",
+              "Supabase Edge Functions",
+              "FastAPI & LangChain",
+              "PostgreSQL & RLS"
             ].map((skill, index) => (
-              <span key={index} className="tech-badge">
+              <span
+                key={index}
+                className="px-3 py-1 rounded-lg bg-white/[0.03] border border-white/[0.08] text-xs font-mono text-slate-300 hover:border-sky-400/40 hover:text-white transition-all duration-200"
+              >
                 {skill}
               </span>
             ))}
-          </motion.div>
+          </div>
 
-          <motion.div variants={itemVariants}>
-            <motion.button
-              whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(0, 212, 255, 0.5)" }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-r from-neon-blue to-purple-gradient hover:from-neon-blue/80 hover:to-purple-gradient/80 text-white font-semibold py-4 px-8 rounded-full transition-all duration-300 shadow-lg"
-              onClick={() => document.getElementById('projects').scrollIntoView({ behavior: 'smooth' })}
+          {/* Action CTAs */}
+          <div className="flex flex-wrap items-center gap-4 pt-4">
+            <a
+              href="#projects"
+              className="group inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-white text-slate-950 font-semibold text-sm hover:bg-slate-200 active:scale-95 transition-all shadow-lg shadow-white/10"
             >
-              View Featured Project
-            </motion.button>
-          </motion.div>
+              <span>Explore Featured Systems</span>
+              <ArrowUpRight className="w-4 h-4 text-slate-900 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </a>
+
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-white/[0.12] bg-white/[0.03] text-sm font-medium text-slate-300 hover:text-white hover:border-white/[0.25] hover:bg-white/[0.06] active:scale-95 transition-all"
+            >
+              <span>Get in Touch</span>
+            </a>
+          </div>
+        </motion.div>
+
+        {/* Right Column: Three.js Interactive 3D Scene (5 Cols) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          className="lg:col-span-5 relative flex items-center justify-center"
+        >
+          {/* Subtle Glow Ring behind 3D Canvas */}
+          <div className="absolute w-72 h-72 rounded-full bg-sky-500/10 blur-3xl pointer-events-none -z-10" />
+
+          {/* 3D Canvas */}
+          <HeroScene3D />
+
+          {/* Interactive Hint */}
+          <div className="absolute bottom-2 right-4 flex items-center gap-1.5 text-[11px] font-mono text-slate-500 pointer-events-none bg-[#07090E]/80 px-2.5 py-1 rounded-full border border-white/[0.06] backdrop-blur-sm">
+            <Sparkles className="w-3 h-3 text-sky-400 animate-pulse" />
+            <span>Interactive 3D Core • Drag / Move Cursor</span>
+          </div>
         </motion.div>
       </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <div className="w-1 h-16 bg-gradient-to-b from-neon-blue to-transparent rounded-full"></div>
-      </motion.div>
     </section>
   )
 }

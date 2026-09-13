@@ -1,5 +1,4 @@
 import React from 'react'
-import { motion } from 'framer-motion'
 import {
   Code,
   Database,
@@ -7,181 +6,142 @@ import {
   Shield,
   Server,
   Cloud,
-  Cpu,
-  Zap,
-  FileCode,
-  GitBranch,
-  Container,
-  Monitor
+  Terminal
 } from 'lucide-react'
 
 const TechStack = () => {
   const skillCategories = [
     {
-      title: "Frontend & Mobile Development",
-      icon: Code,
-      color: "text-neon-blue",
-      bgGradient: "from-neon-blue/20 to-neon-blue/10",
-      skills: [
-        { name: "React.js", level: 95, icon: "⚛️" },
-        { name: "React Native", level: 90, icon: "📱" },
-        { name: "Next.js", level: 88, icon: "🚀" },
-        { name: "TypeScript", level: 92, icon: "📘" },
-        { name: "Flutter", level: 85, icon: "🦋" },
-        { name: "TailwindCSS", level: 90, icon: "🎨" },
-        { name: "JavaScript", level: 95, icon: "⚡" },
-        { name: "Vue.js", level: 80, icon: "💚" }
-      ]
-    },
-    {
       title: "AI & Machine Learning",
       icon: Brain,
-      color: "text-purple-gradient",
-      bgGradient: "from-purple-500/20 to-purple-500/10",
+      tag: "CORE_AI",
       skills: [
-        { name: "Python", level: 95, icon: "🐍" },
-        { name: "LangChain", level: 90, icon: "🦜" },
-        { name: "OpenAI APIs", level: 88, icon: "🤖" },
-        { name: "Transformers", level: 85, icon: "🧠" },
-        { name: "Vector Databases", level: 90, icon: "🗂️" },
-        { name: "RAG Systems", level: 92, icon: "🔍" },
-        { name: "ColPali", level: 85, icon: "🎯" },
-        { name: "TensorFlow", level: 82, icon: "🧮" }
+        "Multimodal Vision AI (OpenAI)",
+        "LangChain & RAG Orchestration",
+        "ColPali & Document AI",
+        "Milvus Vector Database",
+        "Transformers & Embeddings",
+        "Python (PyTorch / Scikit)"
       ]
     },
     {
-      title: "Backend & API Development",
+      title: "Mobile & Frontend Engineering",
+      icon: Code,
+      tag: "CLIENT",
+      skills: [
+        "Flutter 3.44+ & Dart 3.12+",
+        "React.js 18 & Next.js",
+        "React Native",
+        "Astro 4 & Tailwind CSS",
+        "TypeScript",
+        "State Management (Bloc / Provider)"
+      ]
+    },
+    {
+      title: "Backend & Cloud Services",
       icon: Server,
-      color: "text-pink-gradient",
-      bgGradient: "from-pink-500/20 to-pink-500/10",
+      tag: "RUNTIME",
       skills: [
-        { name: "Node.js", level: 93, icon: "🟢" },
-        { name: "FastAPI", level: 90, icon: "⚡" },
-        { name: "Express.js", level: 95, icon: "🌐" },
-        { name: "GraphQL", level: 82, icon: "🔗" },
-        { name: "REST APIs", level: 95, icon: "🌐" },
-        { name: "Microservices", level: 88, icon: "🔧" },
-        { name: "API Security", level: 89, icon: "🛡️" }
+        "Supabase Edge Functions (Deno)",
+        "FastAPI (Python 3.10+)",
+        "Node.js & Express",
+        "RevenueCat In-App Billing",
+        "REST & Streaming WebSockets",
+        "Microservices Architecture"
       ]
     },
     {
-      title: "Database & Storage",
+      title: "Database & Storage Systems",
       icon: Database,
-      color: "text-yellow-400",
-      bgGradient: "from-yellow-400/20 to-yellow-400/10",
+      tag: "DATA_LAYER",
       skills: [
-        { name: "PostgreSQL", level: 90, icon: "🐘" },
-        { name: "MySQL", level: 88, icon: "💿" },
-        { name: "Oracle Database", level: 85, icon: "🗃️" },
-        { name: "Redis", level: 85, icon: "⚡" },
-        { name: "Firebase", level: 87, icon: "🔥" },
-        { name: "Vector DBs", level: 88, icon: "🧮" },
-        { name: "Milvus", level: 86, icon: "🧠" },
-        { name: "SQL Optimization", level: 89, icon: "🚀" }
+        "PostgreSQL (Supabase)",
+        "Row Level Security (RLS)",
+        "Oracle DB (cx_Oracle)",
+        "Microsoft SQL Server",
+        "Redis Distributed Caching",
+        "Vector Indexing & Optimization"
       ]
     },
     {
-      title: "Cloud & DevOps",
+      title: "Cloud Infrastructure & DevOps",
       icon: Cloud,
-      color: "text-green-400",
-      bgGradient: "from-green-400/20 to-green-400/10",
+      tag: "INFRA",
       skills: [
-        { name: "Google Cloud", level: 85, icon: "🌤️" },
-        { name: "Docker", level: 92, icon: "🐳" },
-        { name: "Kubernetes", level: 80, icon: "⚙️" },
-        { name: "Vercel", level: 90, icon: "▲" },
-        { name: "CI/CD", level: 85, icon: "🔄" },
-        { name: "Linux", level: 90, icon: "🐧" },
-        { name: "Nginx", level: 83, icon: "🌐" }
+        "Docker & Containerization",
+        "Multi-GPU (NVIDIA H100) Clusters",
+        "Google Cloud Platform (GCP)",
+        "Vercel & Cloudflare Edge",
+        "CI/CD Pipeline Automation",
+        "Linux & Nginx Reverse Proxy"
       ]
     },
     {
-      title: "Security & Authentication",
+      title: "Security & Enterprise Governance",
       icon: Shield,
-      color: "text-cyan-400",
-      bgGradient: "from-cyan-400/20 to-cyan-400/10",
+      tag: "GOVERNANCE",
       skills: [
-        { name: "JWT Tokens", level: 92, icon: "🎫" },
-        { name: "OAuth 2.0", level: 88, icon: "🛡️" },
-        { name: "Firebase Auth", level: 85, icon: "🔐" },
-        { name: "HTTPS/TLS", level: 89, icon: "🔗" },
-        { name: "API Security", level: 87, icon: "🚨" },
-        { name: "Rate Limiting", level: 86, icon: "🚦" },
-        { name: "Input Validation", level: 91, icon: "✅" },
-        { name: "Encryption", level: 85, icon: "🔒" }
+        "Zero-Trust Architecture",
+        "Row Level Security (RLS)",
+        "NTLM Corporate Single Sign-On",
+        "JWT & OAuth 2.0 Auth",
+        "Fernet Encryption",
+        "Automated Security Auditing"
       ]
     }
   ]
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6
-      }
-    }
-  }
-
   return (
-    <section id="techstack" className="section-padding bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
-            Technology Stack
-          </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            A curated list of technologies and tools I work with to bring ideas to life.
-          </p>
-        </motion.div>
+    <section id="techstack" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
+      {/* Header Section */}
+      <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/[0.08] bg-white/[0.02] text-slate-400 text-xs font-mono tracking-wider uppercase">
+          <Terminal className="w-3.5 h-3.5 text-sky-400" />
+          <span>Technology & Architecture Matrix</span>
+        </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {skillCategories.map((category, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              className={`bg-gray-800/50 rounded-xl shadow-lg overflow-hidden border border-gray-700/50 backdrop-blur-sm transition-all duration-300 hover:shadow-neon-blue/20 hover:-translate-y-1 hover:border-neon-blue/50 ${category.bgGradient}`}
-            >
-              <div className="p-6">
-                <div className="flex items-center mb-4">
-                  <category.icon className={`w-8 h-8 mr-4 ${category.color}`} />
-                  <h3 className={`text-xl font-bold ${category.color}`}>{category.title}</h3>
+        <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-white">
+          Technical <span className="bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-300 bg-clip-text text-transparent">Capabilities</span>
+        </h2>
+        <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
+          Curated disciplines and technologies applied across consumer mobile products, high-throughput cloud infrastructure, and enterprise AI engines.
+        </p>
+      </div>
+
+      {/* Grid of Categories */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {skillCategories.map((category, index) => (
+          <div
+            key={index}
+            className="card-minimal p-6 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-300"
+          >
+            <div>
+              {/* Category Header */}
+              <div className="flex items-center justify-between mb-5">
+                <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-sky-400 group-hover:scale-105 group-hover:text-white transition-all">
+                  <category.icon className="w-4 h-4" />
                 </div>
-                <ul className="space-y-2">
-                  {category.skills.map((skill, sIndex) => (
-                    <li key={sIndex} className="flex items-center text-gray-300">
-                      <span className="text-neon-blue/80 mr-2">›</span>
-                      {skill.name}
-                    </li>
-                  ))}
-                </ul>
+                <span className="text-[10px] font-mono text-slate-500 px-2 py-0.5 rounded bg-white/[0.02] border border-white/[0.05]">
+                  {category.tag}
+                </span>
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
+
+              <h3 className="text-base font-bold text-white mb-4 group-hover:text-sky-400 transition-colors">
+                {category.title}
+              </h3>
+
+              {/* Skills List */}
+              <ul className="space-y-2">
+                {category.skills.map((skill, sIdx) => (
+                  <li key={sIdx} className="flex items-center gap-2 text-xs sm:text-sm text-slate-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-sky-400/60 shrink-0" />
+                    <span>{skill}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   )
