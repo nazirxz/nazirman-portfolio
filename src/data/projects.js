@@ -73,13 +73,11 @@ export const projects = [
     image: '/images/snipe_urbuddy.png',
     gallery: [
       { title: 'Document AI Chat & Retrieval Interface', image: '/images/snipe_urbuddy.png' },
-      { title: 'Milvus Vector DB Architecture', image: '/images/milvus_db.png' },
-      { title: 'Modern Workspace Redesign', image: '/images/projects_redesign_urbuddy.png' },
-      { title: 'Platform Ecosystem', image: '/images/projects_urbuddy.png' }
+      { title: 'Milvus Vector DB Architecture', image: '/images/milvus_db.png' }
     ],
     metrics: [
       { label: 'Sources Unified', value: '5+ Enterprise SharePoint Sites' },
-      { label: 'Retrieval Latency', value: '< 850ms Sub-Second Search' },
+      { label: 'Retrieval Latency', value: '4 - 10s Multimodal RAG' },
       { label: 'Infrastructure', value: 'On-Premise Multi-GPU H100' }
     ],
     highlights: [
